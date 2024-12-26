@@ -1,6 +1,9 @@
 import 'package:bookstore_app/Components/MultilineTextFormField.dart';
 import 'package:bookstore_app/Components/Myformfield.dart';
+import 'package:bookstore_app/Controller/BookController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class AddNewBook extends StatelessWidget {
   const AddNewBook({super.key});
@@ -9,6 +12,7 @@ class AddNewBook extends StatelessWidget {
   Widget build(BuildContext context) {
     // yeh maine temperary banaya hua hai form ke liye
     TextEditingController controller = TextEditingController();
+    BookController bookcontroller = Get.put(BookController());
     return Scaffold(
       // AppBar call ho raha hai as a component
       appBar: AppBar(
@@ -18,7 +22,7 @@ class AddNewBook extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Profile Section  
+            // Profile Section
             Container(
               height: 250,
               padding: const EdgeInsets.all(20),
@@ -71,72 +75,100 @@ class AddNewBook extends StatelessWidget {
               // yahan hum formfields ko call kar rahe hain
               child: Column(
                 children: [
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
                       Expanded(
                         child: Container(
-                                            padding: EdgeInsets.all(15),
-                                            decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                            child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.upload_sharp,color:Theme.of(context).colorScheme.background),
-                          SizedBox(width: 8,),
-                          Text("Book PDF", style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.background,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.primary,
                           ),
-                          )
-                        ],
-                                            ),
-                                          ),
-                      ),
-                      const SizedBox(width: 10,),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.audio_file,color:Theme.of(context).colorScheme.background),
-                          SizedBox(width: 8,),
-                          Text("Book Audio", style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.background,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.upload_sharp,
+                                  color:
+                                      Theme.of(context).colorScheme.background),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Book PDF",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                    ),
+                              )
+                            ],
                           ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.audio_file,
+                                  color:
+                                      Theme.of(context).colorScheme.background),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Book Audio",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                    ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   MyFormField(
-                    controller: controller,
+                    controller: bookcontroller.title,
                     hintText: "Enter Book Name",
                     icon: Icons.book,
                   ),
                   const SizedBox(height: 10),
                   MyFormField(
-                    controller: controller,
+                    controller: bookcontroller.author,
                     hintText: "Author Name",
                     icon: Icons.person,
                   ),
                   const SizedBox(height: 10),
                   MultilineTextField(
-                    controller: controller,
+                    controller: bookcontroller.des,
                     hintText: "Book Description",
                   ),
                   const SizedBox(height: 10),
                   MyFormField(
-                    controller: controller,
+                    controller: bookcontroller.aboutAuth,
                     hintText: "About Author",
                     icon: Icons.person,
                   ),
@@ -147,14 +179,14 @@ class AddNewBook extends StatelessWidget {
                   Row(children: [
                     Expanded(
                         child: MyFormField(
-                      controller: controller,
+                      controller: bookcontroller.price,
                       hintText: "Price",
                       icon: Icons.currency_lira,
                     )),
                     const SizedBox(width: 10),
                     Expanded(
                         child: MyFormField(
-                      controller: controller,
+                      controller: bookcontroller.pages,
                       hintText: "Pages",
                       icon: Icons.pageview_outlined,
                     ))
@@ -164,78 +196,98 @@ class AddNewBook extends StatelessWidget {
                   Row(children: [
                     Expanded(
                         child: MyFormField(
-                      controller: controller,
+                      controller: bookcontroller.language,
                       hintText: "Language",
                       icon: Icons.language,
                     )),
                     const SizedBox(width: 10),
                     Expanded(
                         child: MyFormField(
-                      controller: controller,
+                      controller: bookcontroller.audioLen,
                       hintText: "Audio Len",
                       icon: Icons.audio_file_outlined,
                     ))
-                  ]
-                  ),
+                  ]),
                   // ======================================================
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
-                        Expanded(
-                          child: Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.primary,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.cancel,color:Theme.of(context).colorScheme.background),
-                              SizedBox(width: 8,), 
-                              Text("Cancel", style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.background,
-                            ),
-                            )
-                            ],
-                          ),
-                                                ),
-                        ),
-                        const SizedBox(width: 8,),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.post_add,color:Theme.of(context).colorScheme.background),
-                              SizedBox(width: 8,), 
-                              Text("Post", style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.background,
-                            ),
-                            )
+                              Icon(Icons.cancel,
+                                  color:
+                                      Theme.of(context).colorScheme.background),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Cancel",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                    ),
+                              )
                             ],
                           ),
                         ),
-                      ) 
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.post_add,
+                                  color:
+                                      Theme.of(context).colorScheme.background),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Post",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                    ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
                       // ===========================================
                     ],
                   )
                 ],
                 // ========================================================
-                
               ),
             ),
           ],
-          
         ),
-
-
-        
       ),
     );
   }
