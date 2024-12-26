@@ -36,14 +36,19 @@ class AddNewBook extends StatelessWidget {
                       children: [
                         const SizedBox(height: 20),
                         // User Profile Image
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            bookcontroller.pickImage();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+                            height: 100,
+                            width: 100,
+                            child: const Icon(Icons.add_a_photo),
                           ),
-                          height: 100,
-                          width: 100,
-                          child: const Icon(Icons.add),
                         ),
                       ],
                     ),
