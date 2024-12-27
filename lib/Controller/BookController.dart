@@ -31,6 +31,8 @@ class BookController extends GetxController {
   RxString pdfUrl = "".obs;
   // agar image upload hojaye tou usko show karwane ke liye
   RxBool isImageUploading = false.obs;
+  // yeh pdf ka hai
+  RxBool isPdfUploading = false.obs;
   int index = 0;
   // yahan per file banayengay takay hum apni image ko gallery se pick karen
   void pickImage() async {
@@ -39,13 +41,13 @@ class BookController extends GetxController {
         await imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       print(image.path);
-      uploadImageTOForebase(File(image.path));
+      uploadImageTOFirebase(File(image.path));
       isImageUploading.value = false;
     }
   }
 
   // yahan debug ke time per path nahi lag raha hai
-  void uploadImageTOForebase(File image) async {
+  void uploadImageTOFirebase(File image) async {
     var uuid = Uuid();
     var filename = uuid.v1();
     var storageRef = storage.ref().child("images/$filename");
@@ -53,6 +55,7 @@ class BookController extends GetxController {
     String downloadUrl = await storageRef.getDownloadURL();
     imageUrl.value = downloadUrl;
     print("Download URL: $downloadUrl");
+    isImageUploading.value = false;
   }
 
   // yahan se hum book ko database mai add kar rahe hain
@@ -76,6 +79,7 @@ class BookController extends GetxController {
 
 // =======================PDF wala kaam yahan se shuru hua============================
   void pickPdf() async {
+    isPdfUploading.value = true;
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -103,5 +107,6 @@ class BookController extends GetxController {
     } else {
       print("NO file selected");
     }
+    isPdfUploading.value = false;
   }
 }

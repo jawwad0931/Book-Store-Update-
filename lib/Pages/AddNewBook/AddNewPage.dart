@@ -51,14 +51,19 @@ class AddNewBook extends StatelessWidget {
                                   // child: const Icon(Icons.add_a_photo),
 
                                   // yahan hum ne condition ki base mai image lagaye hue hai
-                                  child: bookcontroller.isImageUploading.value
-                                      ? CircularProgressIndicator(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        )
-                                      : Image.asset(
-                                          "Assets/icons/gallery.png")),
+                                  child: Center(
+                                      child: bookcontroller
+                                              .isImageUploading.value
+                                          ? CircularProgressIndicator(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            )
+                                          : bookcontroller.imageUrl.value == ""
+                                              ? Image.asset(
+                                                  "Assets/icons/gallery.png")
+                                              : Image.network(bookcontroller
+                                                  .imageUrl.value))),
                             )),
                       ],
                     ),
@@ -96,7 +101,8 @@ class AddNewBook extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
+                          child: Obx(
+                        () => Container(
                           padding: EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -104,34 +110,70 @@ class AddNewBook extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
+                              // yahana pdf ko controller se call kiya hai
                               bookcontroller.pickPdf();
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.upload_sharp,
+                            child: bookcontroller.isPdfUploading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .background),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  "Book PDF",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .background,
+                                        .background,
+                                  ))
+                                // =============================yahan pdf ka kaam hai agar data hoga tou uploaded likha hoga
+                                : bookcontroller.pdfUrl.value == ""
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.upload_sharp,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            "Book PDF",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .background,
+                                                ),
+                                          )
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.upload_sharp,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            "Book PDF",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .background,
+                                                ),
+                                          )
+                                        ],
                                       ),
-                                )
-                              ],
-                            ),
+                            // =============================yahan pdf ka kaam hai agar data hoga tou uploaded likha hoga
                           ),
                         ),
-                      ),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
