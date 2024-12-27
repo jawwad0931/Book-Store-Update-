@@ -82,6 +82,8 @@ flutter:
     - Assets/images/
     - Assets/icons/
     - Assets/Animation/
+    - Assets/pdf/muhammadjawwad.pdf
+    
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -37,19 +37,29 @@ class AddNewBook extends StatelessWidget {
                         const SizedBox(height: 20),
                         // User Profile Image
                         InkWell(
-                          onTap: () {
-                            bookcontroller.pickImage();
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            height: 100,
-                            width: 100,
-                            child: const Icon(Icons.add_a_photo),
-                          ),
-                        ),
+                            onTap: () {
+                              bookcontroller.pickImage();
+                            },
+                            child: Obx(
+                              () => Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white,
+                                  ),
+                                  height: 100,
+                                  width: 100,
+                                  // child: const Icon(Icons.add_a_photo),
+
+                                  // yahan hum ne condition ki base mai image lagaye hue hai
+                                  child: bookcontroller.isImageUploading.value
+                                      ? CircularProgressIndicator(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        )
+                                      : Image.asset(
+                                          "Assets/icons/gallery.png")),
+                            )),
                       ],
                     ),
                   ),
