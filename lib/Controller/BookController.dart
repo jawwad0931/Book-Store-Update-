@@ -42,6 +42,12 @@ class BookController extends GetxController {
   var bookData = RxList<BookModel>();
   int index = 0;
   // yahan per file banayengay takay hum apni image ko gallery se pick karen
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getAllBooks();
+  }
 
   // yahan user ki detail ka collection ban raha hai
   void getAllBooks() async {
@@ -87,8 +93,9 @@ class BookController extends GetxController {
         price: int.parse(price.text),
         pages: int.parse(pages.text),
         audioLen: audioLen.text,
-        coverUrl: imageUrl.value,
-        audiourl: pdfUrl.value);
+        coverUrl: "",
+        audiourl: "",
+        rating: "");
 
     await db.collection("books").add(newBook.toJson());
     // yahan hum new collection ko call kar rahe hai jisme user ki details hogi

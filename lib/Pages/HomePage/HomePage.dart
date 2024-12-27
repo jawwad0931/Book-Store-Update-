@@ -1,5 +1,6 @@
 import 'package:bookstore_app/Components/BookCard.dart';
 import 'package:bookstore_app/Components/BookTile.dart';
+import 'package:bookstore_app/Controller/BookController.dart';
 import 'package:bookstore_app/Models/Data.dart';
 import 'package:bookstore_app/Pages/BookDetails/BookDetail.dart';
 import 'package:bookstore_app/Pages/HomePage/widget/Appbar.dart';
@@ -15,6 +16,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // yahan mai controller ke instance ko call kar raha hon jahan se hum data fetch kar rahe hai
+    BookController bookcontroller = Get.put(BookController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -67,7 +70,8 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               // yahan book wala code map kiya gaya hai
               child: Row(
-                children: bookData
+                children: bookcontroller.bookData
+                    // bookData
                     .map((e) => BookCard(
                           coverUrl: e.coverUrl!,
                           title: e.title!,
@@ -93,7 +97,8 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Column(
-                children: bookData
+                children: bookcontroller.bookData
+                    // bookData
                     .map((element) => BookTiles(
                           title: element.title!,
                           author: element.author!,
@@ -109,3 +114,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
+
+// yahan apko book nahi nazar  aa rahi kiunke wo boook ki detail database se ayengi iskeliye database banana hoga
