@@ -102,27 +102,33 @@ class AddNewBook extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.upload_sharp,
-                                  color:
-                                      Theme.of(context).colorScheme.background),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "Book PDF",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
-                              )
-                            ],
+                          child: InkWell(
+                            onTap: () {
+                              bookcontroller.pickPdf();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.upload_sharp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "Book PDF",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .background,
+                                      ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

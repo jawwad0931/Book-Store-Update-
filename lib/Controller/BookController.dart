@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:bookstore_app/Config/Message.dart';
 import 'package:bookstore_app/Models/bookModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,5 +72,36 @@ class BookController extends GetxController {
 
     await db.collection("books").add(newBook.toJson());
     successMessage("Book Added to the database");
+  }
+
+// =======================PDF wala kaam yahan se shuru hua============================
+  void pickPdf() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File file = File(result.files.first.path!);
+
+      if (file.existsSync()) {
+        Uint8List fileBytes = await file.readAsBytes();
+        String fileName = result.files.first.name;
+        print("file Bytes: $fileBytes");
+
+        final response =
+            await storage.ref().child("pdf/$fileName").putData(fileBytes);
+
+        print(response.storage.bucket);
+
+        final downloadURL = await response.ref.getDownloadURL();
+        pdfUrl.value = downloadURL;
+        print("Download URL");
+      } else {
+        print("File does not exist");
+      }
+    } else {
+      print("NO file selected");
+    }
   }
 }
