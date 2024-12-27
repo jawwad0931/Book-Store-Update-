@@ -1,5 +1,6 @@
 import 'package:bookstore_app/Components/BookTile.dart';
 import 'package:bookstore_app/Controller/AuthController.dart';
+import 'package:bookstore_app/Controller/BookController.dart';
 import 'package:bookstore_app/Models/Data.dart';
 import 'package:bookstore_app/Pages/AddNewBook/AddNewPage.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // yahan bookcontroller call kiya hai kiunke book controller se data aa rahah hai database se
+    BookController bookcontroller = Get.put(BookController());
     AuthController authcontroller = Get.put(AuthController());
+    //Auth controller hai yeneeechay wala
+    AuthController authController = Get.put(AuthController());
     // Sample book data to simulate the data source.
     // Replace this with your actual `bookData` from the API or database.
 
@@ -118,17 +123,20 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   // List of Book Tiles
-                  Column(
-                    children: bookData
-                        .map((element) => BookTiles(
-                              title: element.title!,
-                              author: element.author!,
-                              coverUrl: element.coverUrl!,
-                              price: element.price!,
-                              rating: element.rating!,
-                              numberofRating: element.numberofRating!,
-                            ))
-                        .toList(),
+                  Obx(
+                    () => Column(
+                      children: bookcontroller.currentUserBook
+                          // bookData
+                          .map((element) => BookTiles(
+                                title: element.title!,
+                                author: element.author!,
+                                coverUrl: element.coverUrl!,
+                                price: element.price!,
+                                rating: element.rating!,
+                                numberofRating: element.numberofRating!,
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ],
               ),

@@ -67,24 +67,25 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              // yahan book wala code map kiya gaya hai
-              child: Row(
-                children: bookcontroller.bookData
-                    // bookData
-                    .map((e) => BookCard(
-                          coverUrl: e.coverUrl!,
-                          title: e.title!,
-                          onTap: () {
-                            Get.to(BookDetails(
-                              // yahan book ka model use ho raha hai jo humne bookdetail mai banaya hai
-                              book: e,
-                            ));
-                          },
-                        ))
-                    .toList(),
-              ),
-            ),
+                scrollDirection: Axis.horizontal,
+                // yahan book wala code map kiya gaya hai
+                child: Obx(
+                  () => Row(
+                    children: bookcontroller.bookData
+                        // bookData
+                        .map((e) => BookCard(
+                              coverUrl: e.coverUrl!,
+                              title: e.title!,
+                              onTap: () {
+                                Get.to(BookDetails(
+                                  // yahan book ka model use ho raha hai jo humne bookdetail mai banaya hai
+                                  book: e,
+                                ));
+                              },
+                            ))
+                        .toList(),
+                  ),
+                )),
             // ======================================================================video stop 1 hour 55 min stop
             const SizedBox(height: 10),
             const Padding(
@@ -96,18 +97,20 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Column(
-                children: bookcontroller.bookData
-                    // bookData
-                    .map((element) => BookTiles(
-                          title: element.title!,
-                          author: element.author!,
-                          coverUrl: element.coverUrl!,
-                          price: element.price!,
-                          rating: element.rating!,
-                          numberofRating: element.numberofRating!,
-                        ))
-                    .toList()),
+            Obx(
+              () => Column(
+                  children: bookcontroller.bookData
+                      // bookData
+                      .map((element) => BookTiles(
+                            title: element.title!,
+                            author: element.author!,
+                            coverUrl: element.coverUrl!,
+                            price: element.price!,
+                            rating: element.rating!,
+                            numberofRating: element.numberofRating!,
+                          ))
+                      .toList()),
+            )
           ],
         ),
       ),

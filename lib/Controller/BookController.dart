@@ -40,20 +40,38 @@ class BookController extends GetxController {
   RxBool isPostLoading = false.obs;
   // yahan hum book data ki listing kar rahe hain
   var bookData = RxList<BookModel>();
+  // aik aur current user list hai jo ke database se aa rahi hai
+  var currentUserBook = RxList<BookModel>();
   int index = 0;
   // yahan per file banayengay takay hum apni image ko gallery se pick karen
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getAllBooks();
+    getUserBook();
   }
 
   // yahan user ki detail ka collection ban raha hai
   void getAllBooks() async {
+    bookData.clear();
+    successMessage("Books Get Fun");
     var books = await db.collection("Books").get();
     for (var book in books.docs) {
       bookData.add(BookModel.fromJson(book.data()));
+    }
+  }
+
+  void getUserBook() async {
+    currentUserBook.clear();
+    var books = await db
+        .collection("userBook")
+        .doc(Fauth.currentUser!.uid)
+        .collection("book")
+        .get();
+    for (var book in books.docs) {
+      currentUserBook.add(BookModel.fromJson(book.data()));
     }
   }
 
@@ -113,6 +131,7 @@ class BookController extends GetxController {
     imageUrl.value = "";
     pdfUrl.value = "";
     // yahan hum success message show kar rahe hai
+    getAllBooks();
     successMessage("Book Added to the database");
   }
 
