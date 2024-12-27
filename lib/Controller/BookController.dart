@@ -5,6 +5,7 @@ import 'package:bookstore_app/Config/Message.dart';
 import 'package:bookstore_app/Models/bookModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,8 @@ class BookController extends GetxController {
   final storage = FirebaseStorage.instance;
   // aur yahan hum book ki details
   final db = FirebaseFirestore.instance;
+  // yahan hum user ki detail ke liye instance bana rahe hain
+  final Fauth = FirebaseAuth.instance;
   RxString imageUrl = "".obs;
   RxString pdfUrl = "".obs;
   // agar image upload hojaye tou usko show karwane ke liye
@@ -35,8 +38,19 @@ class BookController extends GetxController {
   RxBool isPdfUploading = false.obs;
   // yeh post ki loading ke liye hai
   RxBool isPostLoading = false.obs;
+  // yahan hum book data ki listing kar rahe hain
+  var bookData = RxList<BookModel>();
   int index = 0;
   // yahan per file banayengay takay hum apni image ko gallery se pick karen
+
+  // yahan user ki detail ka collection ban raha hai
+  void getAllBooks() async {
+    var books = await db.collection("Books").get();
+    for (var book in books.docs) {
+      bookData.add(BookModel.fromJson(book.data()));
+    }
+  }
+
   void pickImage() async {
     isImageUploading.value = true;
     final XFile? image =
@@ -77,6 +91,8 @@ class BookController extends GetxController {
         audiourl: pdfUrl.value);
 
     await db.collection("books").add(newBook.toJson());
+    // yahan hum new collection ko call kar rahe hai jisme user ki details hogi
+    addBookInUserDb(newBook);
     isPostLoading.value = false;
     // yahan per sab ko clear kiya jaa raha hao
     title.clear();
@@ -124,5 +140,9 @@ class BookController extends GetxController {
       print("NO file selected");
     }
     isPdfUploading.value = false;
+  }
+
+  void addBookInUserDb(BookModel book) async {
+    await db.collection("userBook").doc().collection("book").add(book.toJson());
   }
 }
