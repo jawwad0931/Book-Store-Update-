@@ -105,48 +105,25 @@ class AddNewBook extends StatelessWidget {
                         () => Container(
                           padding: EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // yahana pdf ko controller se call kiya hai
-                              bookcontroller.pickPdf();
-                            },
-                            child: bookcontroller.isPdfUploading.value
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                  ))
-                                // =============================yahan pdf ka kaam hai agar data hoga tou uploaded likha hoga
-                                : bookcontroller.pdfUrl.value == ""
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.upload_sharp,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .background),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            "Book PDF",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge
-                                                ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .background,
-                                                ),
-                                          )
-                                        ],
-                                      )
-                                    : Row(
+                              borderRadius: BorderRadius.circular(10),
+                              // color: Theme.of(context).colorScheme.primary,
+                              color: bookcontroller.pdfUrl.value == ""
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).colorScheme.background),
+                          child: bookcontroller.isPdfUploading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.background,
+                                ))
+                              // =============================yahan pdf ka kaam hai agar data hoga tou uploaded likha hoga
+                              : bookcontroller.pdfUrl.value == ""
+                                  ? InkWell(
+                                      onTap: () {
+                                        // yahana pdf ko controller se call kiya hai
+                                        bookcontroller.pickPdf();
+                                      },
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -170,44 +147,76 @@ class AddNewBook extends StatelessWidget {
                                           )
                                         ],
                                       ),
-                            // =============================yahan pdf ka kaam hai agar data hoga tou uploaded likha hoga
-                          ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        bookcontroller.pdfUrl.value = "";
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.upload_sharp,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            "Uploaded",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .background,
+                                                ),
+                                          )
+                                        ],
+                                      ),
+                                      // =============================yahan pdf ka kaam hai agar data hoga tou uploaded likha hoga
+                                    ),
                         ),
                       )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.audio_file,
-                                  color:
-                                      Theme.of(context).colorScheme.background),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "Book Audio",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+
+                      // =============================Book Audio wala part comment kiya hua hai ========================
+                      // const SizedBox(
+                      //   width: 10,
+                      // ),
+                      // Expanded(
+                      //   child: Container(
+                      //     padding: EdgeInsets.all(15),
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       color: Theme.of(context).colorScheme.primary,
+                      //     ),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Icon(Icons.audio_file,
+                      //             color:
+                      //                 Theme.of(context).colorScheme.background),
+                      //         SizedBox(
+                      //           width: 8,
+                      //         ),
+                      //         Text(
+                      //           "Book Audio",
+                      //           style: Theme.of(context)
+                      //               .textTheme
+                      //               .bodyLarge
+                      //               ?.copyWith(
+                      //                 color: Theme.of(context)
+                      //                     .colorScheme
+                      //                     .background,
+                      //               ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // =============================Book Audio wala part comment kiya hua hai ========================
                     ],
                   ),
                   const SizedBox(
@@ -243,12 +252,14 @@ class AddNewBook extends StatelessWidget {
                     Expanded(
                         child: MyFormField(
                       controller: bookcontroller.price,
+                      isNumber: true,
                       hintText: "Price",
                       icon: Icons.currency_lira,
                     )),
                     const SizedBox(width: 10),
                     Expanded(
                         child: MyFormField(
+                      isNumber: true,
                       controller: bookcontroller.pages,
                       hintText: "Pages",
                       icon: Icons.pageview_outlined,
@@ -312,37 +323,52 @@ class AddNewBook extends StatelessWidget {
                         width: 8,
                       ),
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.post_add,
-                                  color:
-                                      Theme.of(context).colorScheme.background),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "Post",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                      // ===========================================
+                          // yahan humne container ko Obx mai wrap kiya hua hai
+                          child: Obx(() => Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                child: bookcontroller.isPostLoading.value
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .background),
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          bookcontroller.createbook();
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.post_add,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .background),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              "Post",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge
+                                                  ?.copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .background,
+                                                  ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                              ))
+                          // ===========================================
+                          )
                     ],
                   )
                 ],

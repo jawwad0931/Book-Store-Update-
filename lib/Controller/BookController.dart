@@ -33,6 +33,8 @@ class BookController extends GetxController {
   RxBool isImageUploading = false.obs;
   // yeh pdf ka hai
   RxBool isPdfUploading = false.obs;
+  // yeh post ki loading ke liye hai
+  RxBool isPostLoading = false.obs;
   int index = 0;
   // yahan per file banayengay takay hum apni image ko gallery se pick karen
   void pickImage() async {
@@ -60,6 +62,7 @@ class BookController extends GetxController {
 
   // yahan se hum book ko database mai add kar rahe hain
   void createbook() async {
+    isPostLoading.value = true;
     var newBook = BookModel(
         id: "$index",
         title: title.text,
@@ -74,6 +77,19 @@ class BookController extends GetxController {
         audiourl: pdfUrl.value);
 
     await db.collection("books").add(newBook.toJson());
+    isPostLoading.value = false;
+    // yahan per sab ko clear kiya jaa raha hao
+    title.clear();
+    author.clear();
+    des.clear();
+    aboutAuth.clear();
+    language.clear();
+    price.clear();
+    pages.clear();
+    audioLen.clear();
+    imageUrl.value = "";
+    pdfUrl.value = "";
+    // yahan hum success message show kar rahe hai
     successMessage("Book Added to the database");
   }
 

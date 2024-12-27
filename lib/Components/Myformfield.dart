@@ -5,18 +5,23 @@ class MyFormField extends StatelessWidget {
 
   final String hintText;
   final IconData icon;
+  // yeh integer value ke liye hai
+  final bool isNumber;
   final TextEditingController controller;
-  const MyFormField(
-      {super.key,
-      required this.hintText,
-      required this.icon,
-      required this.controller});
+  const MyFormField({
+    super.key,
+    required this.hintText,
+    required this.icon,
+    required this.controller,
+    this.isNumber = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
         controller: controller,
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(
